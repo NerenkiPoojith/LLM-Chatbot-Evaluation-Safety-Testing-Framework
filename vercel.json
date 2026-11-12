@@ -5,9 +5,9 @@
   "buildCommand": "python3 site/export_static.py public",
   "outputDirectory": "public",
   "headers": [
-    {
-      "source": "/(README.md|tests/(.*)|evaluation/(.*)|data/(.*))",
-      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
-    }
+    { "source": "/README.md", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/tests/:path*", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/evaluation/:path*", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/data/:path*", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] }
   ]
 }
