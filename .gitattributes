@@ -1,0 +1,7 @@
+# Never convert line endings in binary or byte-exact test files
+*.pdf binary
+*.png binary
+*.jpg binary
+*.tiff binary
+*.woff2 binary
+tests/fixtures/** -text

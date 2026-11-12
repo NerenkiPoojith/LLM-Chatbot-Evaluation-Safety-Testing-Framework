@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.cache/
+.env
+reports/history/
+reports/latest_report.*
+reports/pytest_report.html
+
+# Manuals uploaded through the chat page (user data)
+data/uploads/
+
+# Packaged downloads of the project
+dist/
+
+# Static export for Vercel (site/export_static.py)
+public/
+.vercel/

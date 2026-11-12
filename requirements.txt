@@ -1,0 +1,35 @@
+# --- Web API ---
+fastapi>=0.115
+uvicorn>=0.30
+python-multipart>=0.0.9   # file uploads (POST /v1/manuals)
+
+# --- LLM + RAG ---
+anthropic>=1.0            # official Claude SDK (only used when ANTHROPIC_API_KEY is set)
+langchain-core>=0.3       # Documents, Embeddings interface, vector store, LCEL runnables
+langchain-text-splitters>=0.3
+fastembed>=0.4            # small local embedding model (ONNX, no GPU needed)
+numpy>=1.26
+pypdf[crypto]>=6.4        # reads PDF manuals; [crypto] adds cryptography for AES "restrict editing" PDFs
+python-dotenv>=1.0
+
+# --- Reading manuals in other formats (app/formats.py) ---
+python-docx>=1.1          # Word .docx / .docm / .dotx
+python-pptx>=1.0          # PowerPoint .pptx
+openpyxl>=3.1             # Excel .xlsx
+xlrd>=2.0                 # Excel 97-2003 .xls
+olefile>=0.47             # Word 97-2003 .doc and PowerPoint 97-2003 .ppt
+striprtf>=0.0.26          # Rich Text .rtf
+defusedxml>=0.7           # safe XML parsing for OpenDocument, EPUB and XPS
+pillow>=10.0              # photos and scans
+pypdfium2>=4.30           # renders scanned PDF pages for OCR
+rapidocr_onnxruntime>=1.4 # offline OCR (scans and photos); fetches its English model on first use
+# Optional: iPhone photos (.heic). Some managed Windows PCs block its DLL; the app then explains.
+# pillow-heif>=0.18
+
+# --- Testing & reporting ---
+pytest>=8.0
+pytest-html>=4.1
+requests>=2.32
+
+# --- Only needed to rebuild the explanation PDF ---
+reportlab>=4.2

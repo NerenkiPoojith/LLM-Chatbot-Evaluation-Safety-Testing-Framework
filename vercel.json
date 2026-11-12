@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "python3 site/export_static.py public",
+  "outputDirectory": "public",
+  "headers": [
+    {
+      "source": "/(README.md|tests/(.*)|evaluation/(.*)|data/(.*))",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+    }
+  ]
+}

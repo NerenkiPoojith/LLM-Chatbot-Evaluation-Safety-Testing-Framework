@@ -1,0 +1,5 @@
+Code,Meaning,What to do
+F01,No water is entering,Check that the tap is open and the inlet hose is not kinked.
+F07,The drain pump is blocked,Clean the pump filter behind the lower front panel.
+F12,The lid lock has failed,"Close the lid firmly. If F12 returns, call service."
+UB,Unbalanced load,Spread the laundry evenly and restart the cycle.

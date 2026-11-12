@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ApplianceHelp: ask your appliance manual</title>
+  <meta name="description" content="Ask questions about your home appliance, or drop in its manual. Answers come only from the manual, with the section they came from.">
+  <meta name="theme-color" content="#ecd6b3">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="chat.css">
+</head>
+<body class="chat-page">
+  <a class="skip-link" href="#question">Skip to the question box</a>
+
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="wordmark" href="index.html" aria-label="groundcheck chat, home">
+        <svg viewBox="0 0 30 30" aria-hidden="true">
+          <path d="M6 3h13l6 6v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" fill="#000"/>
+          <path class="wm-cut" d="M19 3v4a2 2 0 0 0 2 2h4" fill="none" stroke-width="1.6"/>
+          <path class="wm-cut" d="m9.5 17 3.6 3.6 7.4-8" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        groundcheck
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+        <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html" aria-current="page">Chat</a></li>
+          <li><a href="guide.html">Guide</a></li>
+          <li><a href="docs">API docs</a></li>
+        </ul>
+        <a class="btn btn-secondary btn-sm" href="../docs/LLM_Chatbot_Eval_Guide.pdf">Build guide<span class="visually-hidden"> (PDF)</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="chat-shell" id="main">
+    <h1 class="visually-hidden">Chat with your appliance manuals</h1>
+
+    <div class="server-banner" id="server-banner" role="alert" tabindex="-1" hidden>
+      <b>The chatbot server isn't running.</b>
+      Start it in the project folder with <code>uvicorn app.main:app</code>, then open
+      <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000</a>.
+    </div>
+
+    <section class="transcript" id="transcript" role="log" aria-live="polite" aria-label="Conversation">
+      <div class="welcome" id="welcome">
+        <p class="tab">Appliance manual chatbot</p>
+        <h2 class="welcome-title">Ask your appliance manual.</h2>
+        <p class="lead">Type a question below, or drop your own manual onto this page. Answers come only from the manuals, with the section they came from.</p>
+
+        <button type="button" class="dropcard" id="dropcard">
+          <svg class="dropcard-icon" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M10 4h14l8 8v22a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="M24 4v7a1 1 0 0 0 1 1h7M20 30V18m-5 5 5-5 5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="dropcard-text"><b>Drop your manual here</b> or browse your files</span>
+          <span class="dropcard-hint">PDF, Word, slides, spreadsheets, web pages, e-books, scans and photos, up to 20&nbsp;MB</span>
+        </button>
+
+        <p class="examples-label">Or try a question about the sample manuals:</p>
+        <div class="examples">
+          <button type="button" class="chip" data-question="What does error E21 mean on my washing machine?">What does error E21 mean on my washing machine?</button>
+          <button type="button" class="chip" data-question="How often should I clean the dishwasher filters?">How often should I clean the dishwasher filters?</button>
+          <button type="button" class="chip" data-question="Can I put aluminium foil in the microwave?">Can I put aluminium foil in the microwave?</button>
+        </div>
+      </div>
+    </section>
+
+    <form class="composer" id="composer" autocomplete="off">
+      <label class="visually-hidden" for="question">Your question</label>
+      <textarea id="question" name="question" rows="1" maxlength="1000" placeholder="Ask about your appliance…" aria-describedby="composer-hint"></textarea>
+      <div class="composer-bar">
+        <button type="button" class="tool-btn" id="attach">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m15.5 9.5-5.8 5.8a3.5 3.5 0 0 1-5-5L11 4a2.3 2.3 0 0 1 3.3 3.3L8 13.6a1.2 1.2 0 0 1-1.7-1.7l5.8-5.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="tool-label">Add manual</span>
+        </button>
+        <input type="file" id="file-input" class="visually-hidden" tabindex="-1" aria-hidden="true" multiple>
+        <div class="scope">
+          <button type="button" class="scope-btn" id="scope-btn" aria-expanded="false" aria-controls="scope-panel">
+            <span class="scope-label">Answering from</span>
+            <span class="scope-value" id="scope-value">All manuals</span>
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="scope-panel" id="scope-panel" hidden>
+            <fieldset>
+              <legend>Answer questions from</legend>
+              <div id="scope-options"></div>
+            </fieldset>
+          </div>
+        </div>
+        <span class="mode" id="mode" hidden></span>
+        <button type="submit" class="btn btn-primary send" id="send">
+          <span class="send-text">Send</span>
+          <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <p class="composer-hint" id="composer-hint"><span id="mode-note"></span> <span class="keys-note">Enter to send, Shift+Enter for a new line. Each question is answered on its own.</span></p>
+    </form>
+  </main>
+
+  <div class="drop-overlay" id="drop-overlay" hidden>
+    <div class="drop-overlay-box">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M10 4h14l8 8v22a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M24 4v7a1 1 0 0 0 1 1h7M20 30V18m-5 5 5-5 5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p><b>Drop your manual to add it</b><br><span class="drop-overlay-hint">PDF, Word, slides, spreadsheets, web pages, e-books, scans and photos</span></p>
+    </div>
+  </div>
+
+  <script src="main.js" defer></script>
+  <script src="chat.js" defer></script>
+</body>
+</html>
