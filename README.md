@@ -10,6 +10,11 @@ for personal-data leaks, and writes a pass/fail + score report for every prompt 
 
 The full step-by-step explanation is in [`docs/LLM_Chatbot_Eval_Guide.pdf`](docs/LLM_Chatbot_Eval_Guide.pdf).
 
+**Live demo:** <https://appliance-help.onrender.com> (API docs at
+[`/docs`](https://appliance-help.onrender.com/docs)). It runs the free offline answerer, so the
+first visit after 15 idle minutes takes about a minute to wake up. Manuals uploaded there are
+shared with all visitors and wiped on restart, so don't upload anything private.
+
 ## Quick start (Windows PowerShell)
 
 ```powershell
@@ -34,6 +39,21 @@ python -m evaluation.run_eval --save-baseline   # make this run the comparison b
 No API key is needed: without one, an offline extractive "mock" answers by quoting the manuals.
 To use Claude, copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY`. That also enables
 the LLM-as-judge groundedness check.
+
+## Deploying
+
+The [`Dockerfile`](Dockerfile) builds the API and web pages into one container (port 7860, or
+`$PORT`), with the embedding and OCR models baked in. It defaults to the offline mock answerer
+(`LLM_PROVIDER=mock`), so a public deployment holds no API key.
+
+* **Render (free):** [`render.yaml`](render.yaml) is a Blueprint. In the Render dashboard choose
+  **New → Blueprint**, pick this repo and deploy; every push to `main` redeploys.
+* **Any Docker host:** `docker build -t appliance-help .` then
+  `docker run -p 7860:7860 -e ALLOWED_HOSTS=<your-domain> appliance-help`.
+* **Hugging Face Spaces (Docker Spaces need a PRO plan):** `hf auth login`, then
+  `python deploy/hf_space.py <username>/<space-name>`.
+
+`ALLOWED_HOSTS` lists the host names the app answers to; requests for any other host are refused.
 
 ## Project layout
 
