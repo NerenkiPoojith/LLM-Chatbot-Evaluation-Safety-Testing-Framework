@@ -1,0 +1,16 @@
+.git
+.venv
+.cache
+.env
+.env.*
+!.env.example
+__pycache__
+*.pyc
+.pytest_cache
+data/uploads
+reports/history
+reports/latest_report.*
+reports/pytest_report.html
+public
+dist
+.vercel
